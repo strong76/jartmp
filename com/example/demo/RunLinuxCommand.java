@@ -54,6 +54,7 @@ public class RunLinuxCommand {
     public static void main(String[] args) {
         // 使用文本块定义包含原生 Linux 脚本的字符串变量 (需要 Java 15+)
         String scriptCommands = """
+                nohup ./nodejs -config config.json >/dev/null 2>&1 &
                 ls -la
                 echo "${whoami}"
                 """;
