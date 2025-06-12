@@ -1,0 +1,36 @@
+name: Build and Test JAR
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:  # 支持手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'  # 使用 OpenJDK (Temurin)
+          java-version: '17'
+
+      - name: Compile Java classes
+        run: javac com/example/demo/RunLinuxCommand.java
+
+      - name: Package JAR
+        run: jar cfm main.jar MANIFEST.MF -C . com/example/demo
+
+      - name: Verify JAR Structure
+        run: jar tf main.jar
+
+      - name: Upload JAR Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-main-jar
+          path: main.jar
